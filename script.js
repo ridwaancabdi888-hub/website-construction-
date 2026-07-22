@@ -136,11 +136,11 @@ if (contactForm) {
   contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = contactForm.querySelector('button[type="submit"]');
-    btn.textContent = 'Sending...';
+    btn.textContent = 'Previewing...';
     btn.disabled = true;
 
     setTimeout(() => {
-      btn.textContent = 'Send Message →';
+      btn.textContent = 'Preview Message →';
       btn.disabled = false;
       formSuccess.style.display = 'block';
       contactForm.reset();
