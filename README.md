@@ -4,7 +4,7 @@ This static GitHub Pages site is an older RAMAD presentation. The current canoni
 
 `https://ramad-construction-real-estate.vercel.app/`
 
-To prevent duplicate search results, this legacy URL uses a canonical link to the current website, a `noindex` directive, and a blocking `robots.txt`. It must not be submitted as a separate Google Search Console property or sitemap.
+To prevent duplicate search results, this legacy URL uses a canonical link to the current website, a `noindex` directive, and a crawlable `robots.txt` so search engines can read the canonical and `noindex` directives. It must not be submitted as a separate Google Search Console property or sitemap.
 
 The stock gallery is labelled as architectural inspiration rather than completed work, unverified testimonials have been removed, and the contact form clearly states that it does not transmit data. The owner must verify company credentials, project history, statistics, phone, email, address, and social profiles before presenting them as current facts.
 
