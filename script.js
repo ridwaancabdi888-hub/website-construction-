@@ -14,10 +14,12 @@ window.addEventListener('scroll', () => {
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
 
-menuToggle.addEventListener('click', () => {
-  navLinks.classList.toggle('open');
+function setMenuOpen(isOpen, restoreFocus = false) {
+  navLinks.classList.toggle('open', isOpen);
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+  menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
   const spans = menuToggle.querySelectorAll('span');
-  if (navLinks.classList.contains('open')) {
+  if (isOpen) {
     spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
     spans[1].style.opacity = '0';
     spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
@@ -26,16 +28,23 @@ menuToggle.addEventListener('click', () => {
     spans[1].style.opacity = '1';
     spans[2].style.transform = '';
   }
+  if (!isOpen && restoreFocus) menuToggle.focus();
+}
+
+menuToggle.addEventListener('click', () => {
+  setMenuOpen(!navLinks.classList.contains('open'));
 });
 
 navLinks.querySelectorAll('a').forEach(link => {
   link.addEventListener('click', () => {
-    navLinks.classList.remove('open');
-    const spans = menuToggle.querySelectorAll('span');
-    spans[0].style.transform = '';
-    spans[1].style.opacity = '1';
-    spans[2].style.transform = '';
+    setMenuOpen(false);
   });
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && navLinks.classList.contains('open')) {
+    setMenuOpen(false, true);
+  }
 });
 
 /* ============= ANIMATED COUNTERS ============= */
@@ -77,13 +86,19 @@ const projectCards = document.querySelectorAll('.project-card');
 
 filterBtns.forEach(btn => {
   btn.addEventListener('click', () => {
-    filterBtns.forEach(b => b.classList.remove('active'));
+    filterBtns.forEach(b => {
+      b.classList.remove('active');
+      b.setAttribute('aria-pressed', 'false');
+    });
     btn.classList.add('active');
+    btn.setAttribute('aria-pressed', 'true');
 
     const filter = btn.dataset.filter;
 
     projectCards.forEach(card => {
-      if (filter === 'all' || card.dataset.cat === filter) {
+      const matchesFilter = filter === 'all' || card.dataset.cat === filter;
+      card.hidden = !matchesFilter;
+      if (matchesFilter) {
         card.classList.remove('hidden');
         card.style.animation = 'fadeInUp 0.5s ease both';
       } else {
@@ -161,8 +176,12 @@ window.addEventListener('scroll', () => {
     const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
     if (navLink) {
       if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-        document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '');
+        document.querySelectorAll('.nav-links a').forEach(a => {
+          a.style.color = '';
+          a.removeAttribute('aria-current');
+        });
         navLink.style.color = 'var(--blue)';
+        navLink.setAttribute('aria-current', 'location');
       }
     }
   });
