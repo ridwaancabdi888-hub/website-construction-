@@ -108,22 +108,9 @@ filterBtns.forEach(btn => {
   });
 });
 
-/* ============= TESTIMONIAL DOTS ============= */
-const testiDots = document.getElementById('testiDots');
-const testiCards = document.querySelectorAll('.testi-card');
-
-if (testiDots && testiCards.length) {
-  testiCards.forEach((_, i) => {
-    const dot = document.createElement('button');
-    dot.className = 'testi-dot' + (i === 0 ? ' active' : '');
-    dot.setAttribute('aria-label', `Testimonial ${i + 1}`);
-    testiDots.appendChild(dot);
-  });
-}
-
 /* ============= SCROLL REVEAL ============= */
 const revealEls = document.querySelectorAll(
-  '.service-card, .project-card, .why-card, .testi-card, .about-content, .about-visuals, .contact-info, .contact-form-wrap, .section-header'
+  '.service-card, .project-card, .why-card, .about-content, .about-visuals, .contact-info, .contact-form-wrap, .section-header'
 );
 
 revealEls.forEach((el, i) => {
