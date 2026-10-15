@@ -1,5 +1,7 @@
 // RAMAD Construction Company – script.js
 
+import { createMenuController } from './menu-controller.mjs';
+
 /* ============= NAVBAR SCROLL ============= */
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -13,38 +15,10 @@ window.addEventListener('scroll', () => {
 /* ============= MOBILE MENU ============= */
 const menuToggle = document.getElementById('menuToggle');
 const navLinks = document.getElementById('navLinks');
-
-function setMenuOpen(isOpen, restoreFocus = false) {
-  navLinks.classList.toggle('open', isOpen);
-  menuToggle.setAttribute('aria-expanded', String(isOpen));
-  menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
-  const spans = menuToggle.querySelectorAll('span');
-  if (isOpen) {
-    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-    spans[1].style.opacity = '0';
-    spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-  } else {
-    spans[0].style.transform = '';
-    spans[1].style.opacity = '1';
-    spans[2].style.transform = '';
-  }
-  if (!isOpen && restoreFocus) menuToggle.focus();
-}
-
-menuToggle.addEventListener('click', () => {
-  setMenuOpen(!navLinks.classList.contains('open'));
-});
-
-navLinks.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    setMenuOpen(false);
-  });
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && navLinks.classList.contains('open')) {
-    setMenuOpen(false, true);
-  }
+createMenuController({
+  toggle: menuToggle,
+  menu: navLinks,
+  mobileQuery: window.matchMedia('(max-width: 768px)'),
 });
 
 /* ============= ANIMATED COUNTERS ============= */

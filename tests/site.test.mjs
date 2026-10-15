@@ -9,6 +9,7 @@ const index = readFileSync(resolve(root, 'index.html'), 'utf8');
 const notFound = readFileSync(resolve(root, '404.html'), 'utf8');
 const robots = readFileSync(resolve(root, 'robots.txt'), 'utf8');
 const script = readFileSync(resolve(root, 'script.js'), 'utf8');
+const menuController = readFileSync(resolve(root, 'menu-controller.mjs'), 'utf8');
 
 const attrValues = (html, attribute) => [
   ...html.matchAll(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'gi')),
@@ -69,7 +70,9 @@ test('unverified content and the demo form remain clearly disclosed', () => {
 test('menu and contact form retain accessible semantics', () => {
   assert.match(index, /<a[^>]+class=["']skip-link["'][^>]+href=["']#main-content["']/i);
   assert.match(index, /id=["']menuToggle["'][^>]+aria-controls=["']navLinks["'][^>]+aria-expanded=["']false["']/i);
-  assert.match(script, /event\.key === 'Escape'/);
+  assert.match(menuController, /event\.key === 'Escape'/);
+  assert.match(menuController, /event\.key !== 'Tab'/);
+  assert.match(menuController, /toggleAttribute\('inert'/);
   assert.match(script, /setAttribute\('aria-pressed', 'true'\)/);
 
   for (const id of ['contact-name', 'contact-phone', 'contact-email', 'contact-service', 'contact-message']) {
