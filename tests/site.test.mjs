@@ -10,6 +10,7 @@ const notFound = readFileSync(resolve(root, '404.html'), 'utf8');
 const robots = readFileSync(resolve(root, 'robots.txt'), 'utf8');
 const script = readFileSync(resolve(root, 'script.js'), 'utf8');
 const menuController = readFileSync(resolve(root, 'menu-controller.mjs'), 'utf8');
+const galleryFilter = readFileSync(resolve(root, 'gallery-filter.mjs'), 'utf8');
 
 const attrValues = (html, attribute) => [
   ...html.matchAll(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'gi')),
@@ -73,7 +74,9 @@ test('menu and contact form retain accessible semantics', () => {
   assert.match(menuController, /event\.key === 'Escape'/);
   assert.match(menuController, /event\.key !== 'Tab'/);
   assert.match(menuController, /toggleAttribute\('inert'/);
-  assert.match(script, /setAttribute\('aria-pressed', 'true'\)/);
+  assert.match(index, /id=["']filterStatus["'][^>]+role=["']status["'][^>]+aria-live=["']polite["']/i);
+  assert.match(index, /data-filter=["']all["'][^>]+aria-controls=["']projectsGrid["']/i);
+  assert.match(galleryFilter, /setAttribute\('aria-pressed'/);
 
   for (const id of ['contact-name', 'contact-phone', 'contact-email', 'contact-service', 'contact-message']) {
     assert.match(index, new RegExp(`<label\\s+for=["']${id}["']`, 'i'));

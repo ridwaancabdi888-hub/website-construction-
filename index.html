@@ -80,12 +80,13 @@
       <p class="section-desc">These stock images are design references, not verified RAMAD client projects. Publish case studies only after the owner supplies accurate project records and real photographs.</p>
     </div>
     <div class="projects-filter" role="group" aria-label="Filter concept gallery">
-      <button class="filter-btn active" type="button" data-filter="all" aria-pressed="true">All</button>
-      <button class="filter-btn" type="button" data-filter="villa" aria-pressed="false">Villas</button>
-      <button class="filter-btn" type="button" data-filter="apartment" aria-pressed="false">Apartments</button>
-      <button class="filter-btn" type="button" data-filter="commercial" aria-pressed="false">Commercial</button>
-      <button class="filter-btn" type="button" data-filter="interior" aria-pressed="false">Interiors</button>
+      <button class="filter-btn active" type="button" data-filter="all" aria-controls="projectsGrid" aria-pressed="true">All</button>
+      <button class="filter-btn" type="button" data-filter="villa" aria-controls="projectsGrid" aria-pressed="false">Villas</button>
+      <button class="filter-btn" type="button" data-filter="apartment" aria-controls="projectsGrid" aria-pressed="false">Apartments</button>
+      <button class="filter-btn" type="button" data-filter="commercial" aria-controls="projectsGrid" aria-pressed="false">Commercial</button>
+      <button class="filter-btn" type="button" data-filter="interior" aria-controls="projectsGrid" aria-pressed="false">Interiors</button>
     </div>
+    <p class="filter-status" id="filterStatus" role="status" aria-live="polite" aria-atomic="true">Showing all 8 concept gallery items.</p>
     <div class="projects-grid" id="projectsGrid">
       <div class="project-card" data-cat="villa">
         <div class="project-img-wrap"><img src="https://images.unsplash.com/photo-1613977257363-707ba9348227?w=700&q=80" alt="Luxury Villa Al-Noor" loading="lazy" /></div>

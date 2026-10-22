@@ -1,6 +1,7 @@
 // RAMAD Construction Company – script.js
 
 import { createMenuController } from './menu-controller.mjs';
+import { createGalleryFilter } from './gallery-filter.mjs';
 
 /* ============= NAVBAR SCROLL ============= */
 const navbar = document.getElementById('navbar');
@@ -57,29 +58,11 @@ if (counterEls.length) {
 /* ============= PROJECT FILTER ============= */
 const filterBtns = document.querySelectorAll('.filter-btn');
 const projectCards = document.querySelectorAll('.project-card');
-
-filterBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    filterBtns.forEach(b => {
-      b.classList.remove('active');
-      b.setAttribute('aria-pressed', 'false');
-    });
-    btn.classList.add('active');
-    btn.setAttribute('aria-pressed', 'true');
-
-    const filter = btn.dataset.filter;
-
-    projectCards.forEach(card => {
-      const matchesFilter = filter === 'all' || card.dataset.cat === filter;
-      card.hidden = !matchesFilter;
-      if (matchesFilter) {
-        card.classList.remove('hidden');
-        card.style.animation = 'fadeInUp 0.5s ease both';
-      } else {
-        card.classList.add('hidden');
-      }
-    });
-  });
+const filterStatus = document.getElementById('filterStatus');
+createGalleryFilter({
+  buttons: filterBtns,
+  cards: projectCards,
+  status: filterStatus,
 });
 
 /* ============= SCROLL REVEAL ============= */

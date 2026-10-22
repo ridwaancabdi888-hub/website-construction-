@@ -640,6 +640,12 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   color: white;
   box-shadow: 0 4px 14px rgba(22,119,200,0.35);
 }
+.filter-status {
+  margin: -22px 0 28px;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.9rem;
+}
 
 .projects-grid {
   display: grid;
