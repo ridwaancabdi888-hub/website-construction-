@@ -11,6 +11,7 @@ const robots = readFileSync(resolve(root, 'robots.txt'), 'utf8');
 const script = readFileSync(resolve(root, 'script.js'), 'utf8');
 const menuController = readFileSync(resolve(root, 'menu-controller.mjs'), 'utf8');
 const galleryFilter = readFileSync(resolve(root, 'gallery-filter.mjs'), 'utf8');
+const viewportObserver = readFileSync(resolve(root, 'viewport-observer.mjs'), 'utf8');
 
 const attrValues = (html, attribute) => [
   ...html.matchAll(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'gi')),
@@ -47,6 +48,14 @@ test('hard-coded JavaScript id lookups exist in the page', () => {
   for (const selector of selectors) {
     assert.ok(ids.has(selector), `JavaScript references missing id: ${selector}`);
   }
+});
+
+test('viewport effects have a visible fallback and reduced-motion support', () => {
+  assert.match(script, /typeof window\.matchMedia === ['"]function['"]/);
+  assert.match(script, /prefers-reduced-motion:\s*reduce/);
+  assert.match(script, /Observer:\s*reducedMotion\s*\?\s*null\s*:\s*window\.IntersectionObserver/);
+  assert.match(viewportObserver, /typeof Observer !== ['"]function['"]/);
+  assert.match(viewportObserver, /targets\.forEach\(\(target\) => onVisible\(target\)\)/);
 });
 
 test('legacy pages remain non-indexed and point to the canonical site', () => {

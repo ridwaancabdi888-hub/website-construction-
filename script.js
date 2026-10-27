@@ -2,6 +2,10 @@
 
 import { createMenuController } from './menu-controller.mjs';
 import { createGalleryFilter } from './gallery-filter.mjs';
+import { activateWhenVisible } from './viewport-observer.mjs';
+
+const reducedMotion = typeof window.matchMedia === 'function'
+  && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /* ============= NAVBAR SCROLL ============= */
 const navbar = document.getElementById('navbar');
@@ -41,19 +45,22 @@ function animateCounter(el) {
 
 let countersStarted = false;
 const counterEls = document.querySelectorAll('.stat-num');
-
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting && !countersStarted) {
-      countersStarted = true;
-      counterEls.forEach(el => animateCounter(el));
-    }
+const startCounters = () => {
+  if (countersStarted) return;
+  countersStarted = true;
+  counterEls.forEach((el) => {
+    if (reducedMotion) el.textContent = parseInt(el.dataset.target);
+    else animateCounter(el);
   });
-}, { threshold: 0.5 });
+};
+const counterTarget = counterEls[0]?.closest('.hero-stats') || counterEls[0];
 
-if (counterEls.length) {
-  counterObserver.observe(counterEls[0].closest('.hero-stats') || counterEls[0]);
-}
+activateWhenVisible({
+  elements: counterTarget ? [counterTarget] : [],
+  onVisible: startCounters,
+  Observer: reducedMotion ? null : window.IntersectionObserver,
+  options: { threshold: 0.5 },
+});
 
 /* ============= PROJECT FILTER ============= */
 const filterBtns = document.querySelectorAll('.filter-btn');
@@ -76,16 +83,12 @@ revealEls.forEach((el, i) => {
   if (delay > 0) el.classList.add(`reveal-delay-${delay}`);
 });
 
-const revealObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-      revealObserver.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
-
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+activateWhenVisible({
+  elements: document.querySelectorAll('.reveal'),
+  onVisible: element => element.classList.add('visible'),
+  Observer: reducedMotion ? null : window.IntersectionObserver,
+  options: { threshold: 0.1, rootMargin: '0px 0px -60px 0px' },
+});
 
 /* ============= CONTACT FORM ============= */
 const contactForm = document.getElementById('contactForm');
@@ -137,8 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.scrollY < 100) {
     setTimeout(() => {
       if (!countersStarted) {
-        countersStarted = true;
-        counterEls.forEach(el => animateCounter(el));
+        startCounters();
       }
     }, 1200);
   }
