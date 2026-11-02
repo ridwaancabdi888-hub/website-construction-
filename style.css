@@ -981,15 +981,30 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 .form-group select { appearance: none; cursor: pointer; }
 .form-group textarea { resize: vertical; min-height: 110px; }
 .form-success {
-  display: none;
+  min-height: 1.4em;
   text-align: center;
-  padding: 14px;
-  background: #dcfce7;
-  color: #16a34a;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.84rem;
   margin-top: 12px;
 }
+.form-preview {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: white;
+}
+.form-preview[hidden] { display: none; }
+.form-preview h4 { margin-bottom: 10px; color: var(--text); }
+.form-preview pre {
+  margin: 0 0 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  line-height: 1.7;
+  color: var(--text);
+}
+.form-preview p { margin-bottom: 16px; color: var(--text-muted); font-size: 0.82rem; }
 
 /* ---- MAP ---- */
 .map-wrap {

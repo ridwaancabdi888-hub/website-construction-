@@ -12,6 +12,7 @@ const script = readFileSync(resolve(root, 'script.js'), 'utf8');
 const menuController = readFileSync(resolve(root, 'menu-controller.mjs'), 'utf8');
 const galleryFilter = readFileSync(resolve(root, 'gallery-filter.mjs'), 'utf8');
 const viewportObserver = readFileSync(resolve(root, 'viewport-observer.mjs'), 'utf8');
+const contactFormPreview = readFileSync(resolve(root, 'contact-form-preview.mjs'), 'utf8');
 
 const attrValues = (html, attribute) => [
   ...html.matchAll(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'gi')),
@@ -73,8 +74,10 @@ test('legacy pages remain non-indexed and point to the canonical site', () => {
 test('unverified content and the demo form remain clearly disclosed', () => {
   assert.match(index, /stock images are design references, not verified RAMAD client projects/i);
   assert.match(index, /Verified company statistics have not been supplied/i);
-  assert.match(index, /Demo only: no message was sent or stored/i);
+  assert.match(index, /Demo only: no message will be sent or stored/i);
   assert.doesNotMatch(index, /<form[^>]+action=/i);
+  assert.match(contactFormPreview, /previewText\.textContent\s*=\s*formatContactPreview/);
+  assert.doesNotMatch(contactFormPreview, /innerHTML/);
 });
 
 test('menu and contact form retain accessible semantics', () => {
@@ -92,6 +95,8 @@ test('menu and contact form retain accessible semantics', () => {
     assert.match(index, new RegExp(`<(?:input|select|textarea)[^>]+id=["']${id}["']`, 'i'));
   }
   assert.match(index, /id=["']formSuccess["'][^>]+role=["']status["'][^>]+aria-live=["']polite["']/i);
+  assert.match(index, /id=["']formPreview["'][^>]+aria-labelledby=["']formPreviewTitle["'][^>]+tabindex=["']-1["'][^>]+hidden/i);
+  assert.match(index, /id=["']formPreviewClear["']/i);
 });
 
 test('new-tab links prevent opener access', () => {

@@ -3,6 +3,7 @@
 import { createMenuController } from './menu-controller.mjs';
 import { createGalleryFilter } from './gallery-filter.mjs';
 import { activateWhenVisible } from './viewport-observer.mjs';
+import { createContactFormPreview } from './contact-form-preview.mjs';
 
 const reducedMotion = typeof window.matchMedia === 'function'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -95,19 +96,12 @@ const contactForm = document.getElementById('contactForm');
 const formSuccess = document.getElementById('formSuccess');
 
 if (contactForm) {
-  contactForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = contactForm.querySelector('button[type="submit"]');
-    btn.textContent = 'Previewing...';
-    btn.disabled = true;
-
-    setTimeout(() => {
-      btn.textContent = 'Preview Message →';
-      btn.disabled = false;
-      formSuccess.style.display = 'block';
-      contactForm.reset();
-      setTimeout(() => { formSuccess.style.display = 'none'; }, 5000);
-    }, 1500);
+  createContactFormPreview({
+    form: contactForm,
+    preview: document.getElementById('formPreview'),
+    previewText: document.getElementById('formPreviewText'),
+    status: formSuccess,
+    clearButton: document.getElementById('formPreviewClear'),
   });
 }
 
