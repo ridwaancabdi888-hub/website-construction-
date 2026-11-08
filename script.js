@@ -4,6 +4,7 @@ import { createMenuController } from './menu-controller.mjs';
 import { createGalleryFilter } from './gallery-filter.mjs';
 import { activateWhenVisible } from './viewport-observer.mjs';
 import { createContactFormPreview } from './contact-form-preview.mjs';
+import { createActiveNavigation } from './active-navigation.mjs';
 
 const reducedMotion = typeof window.matchMedia === 'function'
   && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -107,26 +108,11 @@ if (contactForm) {
 
 /* ============= SMOOTH ACTIVE NAV ============= */
 const sections = document.querySelectorAll('section[id]');
-
-window.addEventListener('scroll', () => {
-  const scrollY = window.pageYOffset;
-  sections.forEach(section => {
-    const sectionTop = section.offsetTop - 100;
-    const sectionHeight = section.offsetHeight;
-    const sectionId = section.getAttribute('id');
-    const navLink = document.querySelector(`.nav-links a[href="#${sectionId}"]`);
-    if (navLink) {
-      if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
-        document.querySelectorAll('.nav-links a').forEach(a => {
-          a.style.color = '';
-          a.removeAttribute('aria-current');
-        });
-        navLink.style.color = 'var(--blue)';
-        navLink.setAttribute('aria-current', 'location');
-      }
-    }
-  });
-}, { passive: true });
+createActiveNavigation({
+  sections,
+  links: document.querySelectorAll('.nav-links a'),
+  windowRef: window,
+});
 
 /* ============= HERO BADGE ANIMATION ============= */
 document.addEventListener('DOMContentLoaded', () => {

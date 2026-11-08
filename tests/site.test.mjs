@@ -13,6 +13,7 @@ const menuController = readFileSync(resolve(root, 'menu-controller.mjs'), 'utf8'
 const galleryFilter = readFileSync(resolve(root, 'gallery-filter.mjs'), 'utf8');
 const viewportObserver = readFileSync(resolve(root, 'viewport-observer.mjs'), 'utf8');
 const contactFormPreview = readFileSync(resolve(root, 'contact-form-preview.mjs'), 'utf8');
+const activeNavigation = readFileSync(resolve(root, 'active-navigation.mjs'), 'utf8');
 
 const attrValues = (html, attribute) => [
   ...html.matchAll(new RegExp(`\\b${attribute}=["']([^"']+)["']`, 'gi')),
@@ -89,6 +90,8 @@ test('menu and contact form retain accessible semantics', () => {
   assert.match(index, /id=["']filterStatus["'][^>]+role=["']status["'][^>]+aria-live=["']polite["']/i);
   assert.match(index, /data-filter=["']all["'][^>]+aria-controls=["']projectsGrid["']/i);
   assert.match(galleryFilter, /setAttribute\('aria-pressed'/);
+  assert.match(script, /createActiveNavigation/);
+  assert.match(activeNavigation, /setAttribute\('aria-current', 'location'\)/);
 
   for (const id of ['contact-name', 'contact-phone', 'contact-email', 'contact-service', 'contact-message']) {
     assert.match(index, new RegExp(`<label\\s+for=["']${id}["']`, 'i'));
