@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { formatContactPreview } from '../contact-form-preview.mjs';
+import { formatContactPreview, hasContactMethod } from '../contact-form-preview.mjs';
 
 test('formats supplied contact details in a readable order', () => {
   assert.equal(
@@ -34,4 +34,11 @@ test('keeps user text as plain preview content', () => {
     formatContactPreview({ name: '<img src=x onerror=alert(1)>', message: 'Use A & B' }),
     'Full Name: <img src=x onerror=alert(1)>\nMessage: Use A & B',
   );
+});
+
+test('requires at least one usable contact method', () => {
+  assert.equal(hasContactMethod({ phone: '  ', email: '' }), false);
+  assert.equal(hasContactMethod({ phone: '+252 63 0000000', email: '' }), true);
+  assert.equal(hasContactMethod({ phone: '', email: ' amina@example.com ' }), true);
+  assert.equal(hasContactMethod({}), false);
 });

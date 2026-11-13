@@ -100,6 +100,12 @@ test('menu and contact form retain accessible semantics', () => {
   assert.match(index, /id=["']formSuccess["'][^>]+role=["']status["'][^>]+aria-live=["']polite["']/i);
   assert.match(index, /id=["']formPreview["'][^>]+aria-labelledby=["']formPreviewTitle["'][^>]+tabindex=["']-1["'][^>]+hidden/i);
   assert.match(index, /id=["']formPreviewClear["']/i);
+  assert.match(index, /id=["']contact-phone["'][^>]+aria-describedby=["'][^"']*contact-method-error/i);
+  assert.match(index, /id=["']contact-email["'][^>]+aria-describedby=["'][^"']*contact-method-error/i);
+  assert.match(index, /id=["']contact-method-error["'][^>]+role=["']alert["'][^>]+hidden/i);
+  assert.match(contactFormPreview, /hasContactMethod\(values\)/);
+  assert.match(contactFormPreview, /field\.setAttribute\('aria-invalid', 'true'\)/);
+  assert.match(contactFormPreview, /phone\?\.focus\(\)/);
 });
 
 test('new-tab links prevent opener access', () => {

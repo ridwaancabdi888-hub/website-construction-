@@ -312,12 +312,14 @@
           </div>
           <div class="form-group">
             <label for="contact-phone">Phone Number</label>
-            <input id="contact-phone" name="phone" type="tel" autocomplete="tel" placeholder="+252 ..." />
+            <input id="contact-phone" name="phone" type="tel" autocomplete="tel" placeholder="+252 ..." aria-describedby="contact-method-help contact-method-error" />
           </div>
         </div>
         <div class="form-group">
           <label for="contact-email">Email Address</label>
-          <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="your@email.com" />
+          <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="your@email.com" aria-describedby="contact-method-help contact-method-error" />
+          <p class="form-help" id="contact-method-help">Add at least one contact method so the preview is complete.</p>
+          <p class="form-error" id="contact-method-error" role="alert" hidden>Enter a phone number or email address.</p>
         </div>
         <div class="form-group">
           <label for="contact-service">Service Interested In</label>

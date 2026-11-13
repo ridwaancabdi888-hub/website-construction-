@@ -103,6 +103,7 @@ if (contactForm) {
     previewText: document.getElementById('formPreviewText'),
     status: formSuccess,
     clearButton: document.getElementById('formPreviewClear'),
+    contactError: document.getElementById('contact-method-error'),
   });
 }
 
